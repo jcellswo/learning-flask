@@ -1,21 +1,23 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <main class="hero-section">
+<main class="hero-section">
     <div class="container">
-      
-      <div class="section-content">
-        <h2>First Flask Page</h2>
-        <a href="#" class="btn-primary">Sample 1</a>
-        <a href="{{ url_for('about') }}" class="btn-secondary">Sample 2</a> 
-      </div>
 
-      <div class="section-device">
-        <img src="static/img/device.png">
-      </div>
-      
-      <div class="clearfix"></div>
+        <div class="section-content">
+            <h2>SPIN</h2>
+            <br>
+            <h3>Data Analysis Tool</h3>
+            <a href="#" class="btn-primary">Sample 1</a>
+            <a href="{{ url_for('about') }}" class="btn-secondary">Sample 2</a>
+        </div>
+
+        <div class="section-device">
+            <img src="static/img/device.png">
+        </div>
+
+        <div class="clearfix"></div>
 
     </div>
-  </main>
+</main>
 {% endblock %}
