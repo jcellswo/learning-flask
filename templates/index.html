@@ -1,5 +1,7 @@
-{% extends "layout.html" %}
+{% extends "bootstrap/base.html" %}
 
+{% block title %}SPIN Tool{% endblock %}
+    
 {% block content %}
 <main class="hero-section">
     <div class="container">
@@ -9,7 +11,7 @@
             <br>
             <h3>Data Analysis Tool</h3>
             <a href="#" class="btn-primary">Sample 1</a>
-            <a href="{{ url_for('about') }}" class="btn-secondary">Sample 2</a>
+            <a href="{{ url_for('about') }}" class="btn-secondary">Plots</a>
         </div>
 
         <div class="section-device">
