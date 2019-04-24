@@ -51,6 +51,7 @@ a {
   float: right;
   position: relative;
   top: 65px;
+right: 50 px;
 }
 
 .section-device img {
@@ -285,4 +286,9 @@ header {
 
 .leaflet-popup-content p {
   margin: 10px 0 ;
+}
+
+.SPIN  {
+    font-size: 30 px;
+    font-family: 'Orbitron', sans-serif;
 }

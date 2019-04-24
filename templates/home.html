@@ -1,0 +1,43 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}SPIN Tool{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="hero-section">
+    <div class="container">
+
+
+        <div class="section-content">
+            <h1 class="spin" align="center">SPIN</h1>
+            <br>
+            <h2 class="spin" align="center">Hello, {{first_name}}</h2>
+            <br>
+            <h3 class="spin" align="center">My Journey Building a Data Analysis Tool for High School Science Classes</h3>
+            <br>
+            <a href="{{ url_for('jupyterNotebook') }}" class="btn-secondary" align="center">Step 1: Learning Some Python Data Analysis Tools</a>
+            <br>
+            <br>
+            <a href="{{ url_for('about') }}" class="btn-secondary" align="center">Step 2: Integrating Plotly</a>
+            <br>
+            <br>
+            <a href="{{ url_for('spinHomePg') }}" class="btn-secondary" align="center">Step 3: Create Flask Data Analysis App</a>
+            <br>
+            <br>
+        </div>
+
+        <div class="section-device">
+            <img src="static/img/myScreen.png">
+        </div>
+
+        <div class="clearfix"></div>
+
+
+
+    </div>
+</main>
+{% endblock %}

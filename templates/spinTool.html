@@ -1,93 +1,71 @@
+# -*- coding: utf-8 -*-
+"""
 
+Created Spring 2019 by Jordan Ellsworth
 
-from flask import Flask, render_template, request, redirect, make_response, send_file
-import os
-import pandas as pd
-import numpy as np
+Much of this code was originally written by Alvaro Demig and posted on GitHub
 
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from io import BytesIO
-from flask_bootstrap import Bootstrap
-
-app = Flask(__name__)
-Bootstrap(app)
-
+"""
 
 def datasetList():
-    datasets = [x.split('.')[0] for f in ['datasets', 'preprocessed'] for x in os.listdir(f)]
-    extensions = [x.split('.')[1] for f in ['datasets', 'preprocessed'] for x in os.listdir(f)]
-    folders = [f for f in ['datasets', 'preprocessed'] for x in os.listdir(f)]
-    return datasets, extensions, folders
+datasets = [x.split('.')[0] for f in ['datasets', 'preprocessed'] for x in os.listdir(f)]
+extensions = [x.split('.')[1] for f in ['datasets', 'preprocessed'] for x in os.listdir(f)]
+folders = [f for f in ['datasets', 'preprocessed'] for x in os.listdir(f)]
+return datasets, extensions, folders
 
 #Load columns of the dataset
 def loadColumns(dataset):
-    datasets, extensions, folders = datasetList()
-    if dataset in datasets:
-        extension = extensions[datasets.index(dataset)]
-        if extension == 'txt':
-            df = pd.read_table(os.path.join(folders[datasets.index(dataset)], dataset + '.txt'), nrows=0)
-        elif extension == 'csv':
-            df = pd.read_csv(os.path.join(folders[datasets.index(dataset)], dataset + '.csv'), nrows=0)
-        return df.columns
+datasets, extensions, folders = datasetList()
+if dataset in datasets:
+extension = extensions[datasets.index(dataset)]
+if extension == 'txt':
+df = pd.read_table(os.path.join(folders[datasets.index(dataset)], dataset + '.txt'), nrows=0)
+elif extension == 'csv':
+df = pd.read_csv(os.path.join(folders[datasets.index(dataset)], dataset + '.csv'), nrows=0)
+return df.columns
 
-#Load Dataset    
+#Load Dataset
 def loadDataset(dataset):
-    datasets, extensions, folders = datasetList()
-    if dataset in datasets:
-        extension = extensions[datasets.index(dataset)]
-        if extension == 'txt':
-            df = pd.read_table(os.path.join(folders[datasets.index(dataset)], dataset + '.txt'))
-        elif extension == 'csv':
-            df = pd.read_csv(os.path.join(folders[datasets.index(dataset)], dataset + '.csv'))
-        return df
+datasets, extensions, folders = datasetList()
+if dataset in datasets:
+extension = extensions[datasets.index(dataset)]
+if extension == 'txt':
+df = pd.read_table(os.path.join(folders[datasets.index(dataset)], dataset + '.txt'))
+elif extension == 'csv':
+df = pd.read_csv(os.path.join(folders[datasets.index(dataset)], dataset + '.csv'))
+return df
 
-@app.route("/")
+@app.route('/', methods = ['GET', 'POST'])
 def index():
-    return render_template("index.html")
-
-@app.route("/home", methods=['POST','GET'])
-def home():
-    return render_template("home.html", first_name=request.form['first_name'])
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-@app.route("/jupyterNotebook")
-def jupyterNotebook():
-    return render_template("tidesGraphing.html") 
-
-@app.route('/spinHomePg', methods = ['GET', 'POST'])
-def spinHomePg():
-    datasets,_,folders = datasetList()
-    originalds = []
-    featuresds = []
-    for i in range(len(datasets)):
-        if folders[i] == 'datasets': originalds += [datasets[i]]
-        else: featuresds += [datasets[i]]
-    if request.method == 'POST':
-            f = request.files['file']
-            f.save(os.path.join('datasets', f.filename))
-            return redirect('/spinHomePg')
-    return render_template('spinHomePg.html', originalds = originalds, featuresds = featuresds)
+datasets,_,folders = datasetList()
+originalds = []
+featuresds = []
+for i in range(len(datasets)):
+if folders[i] == 'datasets': originalds += [datasets[i]]
+else: featuresds += [datasets[i]]
+if request.method == 'POST':
+f = request.files['file']
+f.save(os.path.join('datasets', f.filename))
+return redirect('/')
+return render_template('index.html', originalds = originalds, featuresds = featuresds)
 
 @app.route('/datasets/')
 def datasets():
-    return redirect('/spinHomePg')
+return redirect('/')
 
 @app.route('/datasets/<dataset>')
-def dataset(description = None, head = None, dataset = None):
+    def dataset(description = None, head = None, dataset = None):
     df = loadDataset(dataset)
     try:
-        description = df.describe().round(2)
-        head = df.head(5)
+    description = df.describe().round(2)
+    head = df.head(5)
     except: pass
     return render_template('dataset.html',
-                           description = description.to_html(classes='table table-striped table-hover'),
-                           head = head.to_html(index=False, classes='table table-striped table-hover'),
-                           dataset = dataset)
+    description = description.to_html(classes='table table-striped table-hover'),
+    head = head.to_html(index=False, classes='table table-striped table-hover'),
+    dataset = dataset)
     
-@app.route('/datasets/<dataset>/preprocessing')
+    @app.route('/datasets/<dataset>/preprocessing')
 def preprocessing(dataset = dataset):
     columns = loadColumns(dataset)
     return render_template('preprocessing.html', dataset = dataset, columns=columns)
@@ -164,7 +142,3 @@ def graph_process(dataset = dataset):
     if figs == {}: return redirect('/datasets/' + dataset + '/graphs')
     return render_template('drawgraphs.html', figs = figs, dataset = dataset)
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-    

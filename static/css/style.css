@@ -1,0 +1,14 @@
+.spin {
+    font-family: 'Orbitron', sans-serif;
+}
+
+.section-device {
+
+    position: relative;
+   padding-right: 150 px;
+}
+
+.section-device img {
+    width: 400 px;
+    padding-right: 150 px;
+}

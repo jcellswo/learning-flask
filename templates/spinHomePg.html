@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<br>
+<div style="display: flex; justify-content: center;">
+<h1 align = 'center' class= 'spin' align = 'center'>SPIN</h1>
+</div><br>
+<h3 align='center'>Choose a dataset!</h3>
+<h4 align='center'>Original datasets</h4>
+{% for ds in originalds %}
+<h4 align='center'><a href='datasets/{{ds}}'>{{ds}}</a></h4>
+{% endfor %}
+<h3 align='center'>Datasets after preprocessing:</h3>
+{% for ds in featuresds %}
+<h4 align='center'><a href='datasets/{{ds}}'>{{ds}}</a></h4>
+{% endfor %}
+<br>
+<h3 align='center'>Upload your own dataset:</h3>
+<div align='center'>
+<form action = "http://127.0.0.1:5000/" method = "POST" 
+         enctype = "multipart/form-data" align='center'>
+         <input type = "file" name = "file" align='center'>
+         <input type = "submit" align='center' value="Upload">
+</form></div>
+        <div class="section-device">
+            <img src="static/img/myScreen.png">
+        </div>
+</div>
+<br>
+<br>
+{% endblock %}
